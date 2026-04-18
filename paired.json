@@ -1,0 +1,47 @@
+{
+  "337585dfaa49ca5a5488df705fb95bd088042568d6cc3dcd8837f0b0efa9621b": {
+    "deviceId": "337585dfaa49ca5a5488df705fb95bd088042568d6cc3dcd8837f0b0efa9621b",
+    "publicKey": "DAhaztA7osriFQxl2OAZFS2lKDO7phUP_gq62o0VBRQ",
+    "platform": "linux",
+    "clientId": "gateway-client",
+    "clientMode": "backend",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.read",
+      "operator.write",
+      "operator.approvals",
+      "operator.pairing",
+      "operator.talk.secrets"
+    ],
+    "approvedScopes": [
+      "operator.admin",
+      "operator.read",
+      "operator.write",
+      "operator.approvals",
+      "operator.pairing",
+      "operator.talk.secrets"
+    ],
+    "tokens": {
+      "operator": {
+        "token": "2L267Y7x1IiVma5LDiL2RncxjBNU1Z5Bu9D2eQHVQ9k",
+        "role": "operator",
+        "scopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing",
+          "operator.read",
+          "operator.talk.secrets",
+          "operator.write"
+        ],
+        "createdAtMs": 1776298390148
+      }
+    },
+    "createdAtMs": 1776298390147,
+    "approvedAtMs": 1776298390147,
+    "displayName": "telegram Native Approvals (default)"
+  }
+}

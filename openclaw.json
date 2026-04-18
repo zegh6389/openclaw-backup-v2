@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.4.14",
+    "lastTouchedAt": "2026-04-16T02:50:38.423Z"
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "/home/jin/.openclaw/workspace",
+      "model": {
+        "primary": "minimax/MiniMax-M2.7",
+        "fallbacks": [
+          "minimax/MiniMax-M2.7-highspeed"
+        ]
+      },
+      "thinkingDefault": "high",
+      "contextTokens": 180000,
+      "timeoutSeconds": 600,
+      "params": {
+        "cacheRetention": "long"
+      },
+      "imageMaxDimensionPx": 1200,
+      "mediaMaxMb": 50,
+      "pdfMaxBytesMb": 20,
+      "pdfMaxPages": 30,
+      "compaction": {
+        "mode": "safeguard",
+        "reserveTokensFloor": 28000,
+        "identifierPolicy": "strict",
+        "notifyUser": true,
+        "memoryFlush": {
+          "enabled": true,
+          "softThresholdTokens": 8000,
+          "systemPrompt": "Session nearing compaction. Store durable memories now.",
+          "prompt": "Write any lasting notes to memory/YYYY-MM-DD.md and update MEMORY.md. Reply with NO_REPLY if nothing to store."
+        }
+      },
+      "bootstrapMaxChars": 18000,
+      "bootstrapTotalMaxChars": 140000,
+      "bootstrapPromptTruncationWarning": "once",
+      "startupContext": {
+        "enabled": true,
+        "applyOn": [
+          "new",
+          "reset"
+        ],
+        "dailyMemoryDays": 3,
+        "maxFileBytes": 18000,
+        "maxFileChars": 1400,
+        "maxTotalChars": 3000
+      },
+      "skills": [
+        "github",
+        "web-browsing",
+        "coding-agent",
+        "gh-issues",
+        "docker-essentials",
+        "linux-desktop",
+        "mem0",
+        "clawrouter",
+        "memory-setup"
+      ],
+      "heartbeat": {
+        "every": "30m",
+        "lightContext": true,
+        "includeSystemPromptSection": true,
+        "includeReasoning": false,
+        "isolatedSession": false,
+        "session": "main",
+        "directPolicy": "allow",
+        "target": "none",
+        "prompt": "Read HEARTBEAT.md if it exists. Follow it strictly. If nothing needs attention, reply HEARTBEAT_OK only.",
+        "ackMaxChars": 200,
+        "suppressToolErrorWarnings": false,
+        "timeoutSeconds": 60
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "minimax": {
+        "baseUrl": "https://api.minimax.io/anthropic",
+        "api": "anthropic-messages",
+        "apiKey": "sk-cp-_Ms_x5GAK44pbnRUWUF-8O6cGwQSIgn9KEXK-KNxA7NhlYujMLzfuOLA3_GHA2iFu583vmqZNKpbeCalPsI6RCZE1kXG5cMZNd8f5yA5224GaAUTRsTaGSg",
+        "models": [
+          {
+            "id": "MiniMax-M2.7",
+            "name": "MiniMax M2.7",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0.3,
+              "output": 1.2,
+              "cacheRead": 0.06,
+              "cacheWrite": 0.375
+            },
+            "contextWindow": 204800,
+            "maxTokens": 131072
+          },
+          {
+            "id": "MiniMax-M2.7-highspeed",
+            "name": "MiniMax M2.7 Highspeed",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0.6,
+              "output": 2.4,
+              "cacheRead": 0.06,
+              "cacheWrite": 0.375
+            },
+            "contextWindow": 204800,
+            "maxTokens": 131072
+          }
+        ]
+      }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "aa260f549a5ce375eb3acc97fe14204c66406c82f8c53596"
+    }
+  },
+  "env": {
+    "vars": {}
+  },
+  "plugins": {
+    "enabled": true,
+    "entries": {
+      "minimax": {
+        "enabled": true,
+        "config": {
+          "webSearch": {
+            "apiKey": "sk-cp-_Ms_x5GAK44pbnRUWUF-8O6cGwQSIgn9KEXK-KNxA7NhlYujMLzfuOLA3_GHA2iFu583vmqZNKpbeCalPsI6RCZE1kXG5cMZNd8f5yA5224GaAUTRsTaGSg",
+            "region": "global"
+          }
+        }
+      },
+      "telegram": {
+        "enabled": true
+      }
+    }
+  },
+  "tools": {
+    "profile": "coding",
+    "allow": [
+      "group:fs",
+      "group:runtime",
+      "group:web",
+      "group:sessions",
+      "group:memory",
+      "group:media",
+      "cron",
+      "image",
+      "image_generate",
+      "video_generate"
+    ],
+    "deny": [
+      "canvas"
+    ],
+    "elevated": {
+      "enabled": true
+    },
+    "web": {
+      "search": {
+        "enabled": true,
+        "provider": "minimax",
+        "maxResults": 8,
+        "timeoutSeconds": 30,
+        "cacheTtlMinutes": 15
+      },
+      "fetch": {
+        "enabled": true,
+        "maxChars": 80000,
+        "timeoutSeconds": 30,
+        "cacheTtlMinutes": 30,
+        "readability": true,
+        "maxRedirects": 5
+      }
+    },
+    "exec": {
+      "backgroundMs": 15000,
+      "timeoutSec": 600,
+      "cleanupMs": 600000,
+      "notifyOnExit": false,
+      "notifyOnExitEmptySuccess": false
+    },
+    "loopDetection": {
+      "enabled": true,
+      "historySize": 40,
+      "warningThreshold": 12,
+      "criticalThreshold": 25,
+      "globalCircuitBreakerThreshold": 40,
+      "detectors": {
+        "genericRepeat": true,
+        "knownPollNoProgress": true,
+        "pingPong": true
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "8674028249:AAEsiuL9NXvcnBD2plNpcxS3lFrjLNoiCKM",
+      "dmPolicy": "pairing",
+      "groupPolicy": "allowlist",
+      "allowFrom": [
+        "5274114698"
+      ],
+      "commands": {
+        "native": true,
+        "nativeSkills": true
+      },
+      "replyToMode": "first",
+      "linkPreview": true,
+      "streaming": {
+        "mode": "partial",
+        "chunkMode": "length"
+      },
+      "historyLimit": 80,
+      "textChunkLimit": 4000,
+      "mediaMaxMb": 50,
+      "reactionNotifications": "own",
+      "groups": {
+        "*": {
+          "requireMention": true
+        }
+      },
+      "retry": {
+        "attempts": 3,
+        "minDelayMs": 500,
+        "maxDelayMs": 30000,
+        "jitter": 0.15
+      }
+    }
+  },
+  "messages": {
+    "responsePrefix": "\ud83e\udd9e",
+    "ackReaction": "\ud83d\udc40",
+    "ackReactionScope": "group-mentions",
+    "removeAckAfterReply": false,
+    "queue": {
+      "mode": "steer",
+      "debounceMs": 1500,
+      "cap": 15,
+      "drop": "summarize"
+    },
+    "inbound": {
+      "debounceMs": 2000
+    },
+    "tts": {
+      "auto": "off",
+      "mode": "final",
+      "maxTextLength": 3000,
+      "timeoutMs": 30000
+    }
+  },
+  "session": {
+    "scope": "per-sender",
+    "dmScope": "main",
+    "reset": {
+      "mode": "daily",
+      "atHour": 4,
+      "idleMinutes": 120
+    },
+    "resetTriggers": [
+      "/new",
+      "/reset"
+    ],
+    "maintenance": {
+      "mode": "warn",
+      "pruneAfter": "30d",
+      "maxEntries": 500,
+      "rotateBytes": "10mb",
+      "resetArchiveRetention": "30d",
+      "maxDiskBytes": "500mb",
+      "highWaterBytes": "400mb"
+    },
+    "threadBindings": {
+      "enabled": true,
+      "idleHours": 24,
+      "maxAgeHours": 0
+    }
+  },
+  "mcp": {
+    "servers": {
+      "pwm": {
+        "command": "pwm-mcp"
+      },
+      "browseros": {
+        "url": "http://127.0.0.1:9200/mcp"
+      },
+      "mempalace": {
+        "command": "/home/jin/.local/share/pipx/venvs/mempalace/bin/python3",
+        "args": [
+          "-m",
+          "mempalace.mcp_server"
+        ]
+      },
+      "github": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-github"
+        ],
+        "env": {}
+      }
+    }
+  },
+  "skills": {
+    "load": {
+      "extraDirs": [
+        "/home/jin/openclaw-src/skills"
+      ]
+    },
+    "limits": {
+      "maxSkillsLoadedPerSource": 2000,
+      "maxSkillsInPrompt": 100
+    }
+  }
+}
